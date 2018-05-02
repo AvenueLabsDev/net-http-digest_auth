@@ -107,14 +107,10 @@ class Net::HTTP::DigestAuth
     qop = params['qop']
     cnonce = make_cnonce if qop or sess
 
-    a1 = if sess then
-           [ algorithm.hexdigest("#{user}:#{params['realm']}:#{password}"),
-             params['nonce'],
-             cnonce,
-           ].join ':'
-         else
-           "#{user}:#{params['realm']}:#{password}"
-         end
+    a1 = [ algorithm.hexdigest("#{user}:#{params['realm']}:#{password}"),
+            params['nonce'],
+            cnonce,
+         ].join ':'
 
     ha1 = algorithm.hexdigest a1
     ha2 = algorithm.hexdigest "#{method}:#{uri.request_uri}"
